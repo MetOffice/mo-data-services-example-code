@@ -1,0 +1,49 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Creates an SQS queue with permissions to receive notifications",
+    "Resources": {
+        "myQueue": {
+            "Type": "AWS::SQS::Queue",
+            "Properties": {
+                "MessageRetentionPeriod": 43200,
+                "QueueName": "<insert-your-queue-name>"
+            }
+        },
+        "SQSQueuePolicy": {
+            "Type": "AWS::SQS::QueuePolicy",
+            "Properties": {
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Id": "SQSQueuePolicyToReceiveServiceNotifications",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Principal": "*",
+                        "Action": [
+                            "sqs:SendMessage"
+                        ],
+                        "Resource": {
+                            "Fn::GetAtt": ["myQueue", "Arn"]
+                        },
+                        "Condition": {
+                            "ArnEquals": {
+                                "aws:SourceArn": "<insert-service-arn-supplied-by-Met-Office>"
+                            }
+                        }
+                    }]
+                },
+                "Queues": [{
+                    "Ref": "myQueue"
+                }]
+            }
+        }
+     },
+"Outputs": {
+        "myQueueARN": {
+            "Description": "The ARN for the SQS queue, needed for subscribing to the service",
+            "Value": {
+                "Fn::GetAtt": ["myQueue", "Arn"]
+             }
+         }
+     }
+}
