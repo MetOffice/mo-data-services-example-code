@@ -24,14 +24,14 @@
    {
      "Type" : "Notification",
      "MessageId" : "4f3a4169-21d7-55d4-b427-1333c7f84113",
-     "TopicArn" : "arn:aws:sns:eu-west-2:271253003023:mo-atmospheric-global-prd",
+     "TopicArn" : "arn:aws:sns:eu-west-2:271253003023:mo-atmospheric-global",
      "Subject" : "AWS Notification Message",
      "Message" : "{\"metadata\":{\"forecast_reference_time\":\"2017-10-07T23:00:00Z\",\"forecast_period\":\"0\",\"name\":\"deprecated_precipitation_rate\",\"forecast_period_units\":\"seconds\"},\"url\":\"https://api.metoffice.gov.uk/mo-atmospheric-global/v1/objects/20171007T2300Z-PT0000H-deprecated_precipitation_rate.nc\"}",
      "Timestamp" : "2017-10-13T16:03:59.095Z",
      "SignatureVersion" : "1",
      "Signature" : "af0SnkRbIxaZ1P721XkkSqPdCLaIh+/Bri1uonK8n02rnjXQ6fNXJQ4HEbu0bjUB3Wm/CSHAlLc2sVWU5aFFCYABr2UBQfsrutj07dR2OmcF6WX/MHaXodWApBFrXemqpOLJ6e+KRzfGfr+rKczlpLwc9d4CQgPhA5a1eVuKlKWhoLJNuwdxcjA5FhXT/ABx3pmd+GRJ6Zk5uh/2xxV7Kt+TZ7oom/mKIOGU0YV35ki3R+t52aKEXZ43m5J/6LF8G/o1pXeMl9BJWtgdtHA9luLfN1ryNs4TmkSQxFuWXrrHTAL2iYSyxzNKB+a0gg2DfLqS9shsxAqD2HWH4/spyg==",
      "SigningCertURL" : "https://sns.eu-west-2.amazonaws.com/SimpleNotificationService-433026a4050d206028891664da859041.pem",
-     "UnsubscribeURL" : "https://sns.eu-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-2:271253003023:mo-atmospheric-global-prd:bb3b1a84-728a-452a-807f-e92bd3b7d285"
+     "UnsubscribeURL" : "https://sns.eu-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-2:271253003023:mo-atmospheric-global:bb3b1a84-728a-452a-807f-e92bd3b7d285"
    }
    ```
    Where the "message" value returned will be similar to the following example:
