@@ -14,6 +14,7 @@ import boto3
 
 
 DOWNLOAD_DIR = 'objects'
+CHUNK_SIZE = 10 * 1024 * 1024
 
 
 def download_object(url, api_key, verbose):
@@ -22,9 +23,9 @@ def download_object(url, api_key, verbose):
     target_path = os.path.join(DOWNLOAD_DIR, url.split('/')[-1])
     headers = {'x-api-key': api_key}
     print('Beginning download of {} to {}'.format(url, target_path))
-    r = requests.get(url, headers=headers)
+    r = requests.get(url, headers=headers, stream=True)
     with open(target_path, 'wb') as fd:
-        for chunk in r.iter_content(chunk_size=128):
+        for chunk in r.iter_content(chunk_size=CHUNK_SIZE):
             fd.write(chunk)
     print('Completed download of {} to {}'.format(url, target_path))
 
@@ -33,7 +34,7 @@ def download_from_queue(api_key, queue_name, start_time, end_time, diagnostics,
                         keep_messages, verbose):
     sqs = boto3.resource('sqs')
     queue = sqs.get_queue_by_name(QueueName=queue_name)
-    
+
     while True:
         print("Checking queue for messages...")
 
@@ -64,7 +65,7 @@ def check_times(start_time, end_time):
 
 def check_diagnostics(diagnostics):
     '''
-    Takes a list of command line arguments, and returns corresponding 
+    Takes a list of command line arguments, and returns corresponding
     file metadata names, filtering unneeded and unrecognised items
     '''
     return_list = []
