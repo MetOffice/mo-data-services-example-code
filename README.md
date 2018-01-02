@@ -1,25 +1,25 @@
 # Notification and download of Met Office atmospheric model data
-### Timely access to forecast data at a granular level  
+### Timely access to forecast data at a granular level
   This API provides access to UK and Global atmospheric model data to customers who have signed up for a service.
 
 ### Services available:
 
-   - Global Model  
-   - MOGREPS-G Ensemble  
-   - UKV Model  
-   - MOGREPS-UK Ensemble  
+   - Global Model
+   - MOGREPS-G Ensemble
+   - UKV Model
+   - MOGREPS-UK Ensemble
 
 # Prerequisites:
 
   * Sign up to one or more of the Atmospheric Model data services.
   * Receive one or more API keys.
-  * Receive one or more SNS topic Amazon Resource Names (ARNs).
+  * Receive one or more SNS topic Amazon Resource Names (ARNs) if using an AWS accont.
 
 # Actions:
 
-   1. Set up an [endpoint](aws-example/README.md) which can receive SNS notifications.
-  
-   2.  During model output periods, receive notifications of newly available files on the endpoint in a format similar to the following:
+   1. Set up an endpoint to receive SNS messages: either via [AWS SQS](aws-example/README.md) or [HTTP](http-endpoint-example/README.md).
+
+   2. During model output periods, receive notifications of newly available files on the endpoint in a format similar to the following:
    ```
    {
      "Type" : "Notification",
@@ -50,12 +50,12 @@
       "url":"https://api.metoffice.gov.uk/mo-atmospheric-global/v1/objects/20171015T0000Z-PT0000H-temperature_on_height_levels.nc"
    }
 ```
-  
-  
+
+
    3.  Decide by examining the metadata section in each notification which items you would like to download.
-  
-  
+
+
    4.  Using the url in the notification and the **API key** (see [Prerequisites](#prerequisites)) as a header called "x-api-key" request the object for download.
-  
-  
+
+
    5.  Receive the requested object as a file download.

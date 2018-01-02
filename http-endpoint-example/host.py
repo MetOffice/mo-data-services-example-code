@@ -32,7 +32,7 @@ def get_object(url):
 
 
 def handle_message(message):
-    message = json.loads(message['metadata']['name'])
+    message = json.loads(message)
     if message['metadata']['name'] in checked_diagnostics:
         forecast_period = int(message['metadata']['forecast_period'])
         if start_time <= forecast_period <= end_time:
