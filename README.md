@@ -13,7 +13,7 @@
 
   * Sign up to one or more of the Atmospheric Model data services.
   * Receive one or more API keys.
-  * Receive one or more SNS topic Amazon Resource Names (ARNs) if using an AWS accont.
+  * Receive one or more SNS topic Amazon Resource Names (ARNs) if using an AWS account.
 
 # Actions:
 
