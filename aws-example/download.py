@@ -39,19 +39,28 @@ def download_from_queue(api_key, queue_name, start_time, end_time, diagnostics,
         print("Checking queue for messages...")
 
         for message in queue.receive_messages(WaitTimeSeconds=2):
+
             message_body = json.loads(message.body)
-            sns_notification = json.loads(message_body['Message'])
+            message_type = message_body['Type']
 
-            # Production code should verify the SNS signature before
-            # proceeding.
+            # Confirm the subscription to the SNS topic
+            if message_type == 'SubscriptionConfirmation':
+                requests.get(message_body['SubscribeURL'])
 
-            if verbose:
-                print(sns_notification)
+            # Handle the actual message
+            elif message_type == 'Notification':
+                sns_notification = json.loads(message_body['Message'])
 
-            if sns_notification['metadata']['name'] in diagnostics:
-                if int(sns_notification['metadata']['forecast_period']) >= start_time:
-                    if int(sns_notification['metadata']['forecast_period']) <= end_time:
-                        download_object(sns_notification['url'], api_key, verbose)
+                # Production code should verify the SNS signature before
+                # proceeding.
+
+                if verbose:
+                    print(sns_notification)
+
+                if not diagnostics or sns_notification['metadata']['name'] in diagnostics:
+                    if int(sns_notification['metadata']['forecast_period']) >= start_time:
+                        if int(sns_notification['metadata']['forecast_period']) <= end_time:
+                            download_object(sns_notification['url'], api_key, verbose)
 
             if not keep_messages:
                 message.delete()
@@ -62,22 +71,6 @@ def check_times(start_time, end_time):
         raise ValueError('End time should be greater than or equal to start time')
     return (start_time * 60 * 60, end_time * 60 * 60)
 
-
-def check_diagnostics(diagnostics):
-    '''
-    Takes a list of command line arguments, and returns corresponding
-    file metadata names, filtering unneeded and unrecognised items
-    '''
-    return_list = []
-    if 'temperature' in diagnostics:
-        return_list.append('surface_temperature')
-    if 'pressure' in diagnostics:
-        return_list.append('surface_air_pressure')
-    if 'humidity' in diagnostics:
-        return_list.append('relative_humidity')
-    return return_list
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Download objects identified in S3 events delivered'
@@ -86,7 +79,7 @@ if __name__ == '__main__':
     parser.add_argument('queue_name')
     parser.add_argument('start_time', type=int)
     parser.add_argument('end_time', type=int)
-    parser.add_argument('diagnostic')
+    parser.add_argument('diagnostic', nargs='?')
     parser.add_argument('-k', '--keep', action='store_true',
                         help='Retain messages in SQS queue after processing.'
                              ' (Useful when debugging.)')
@@ -96,8 +89,5 @@ if __name__ == '__main__':
 
     (start_time, end_time) = check_times(args.start_time, args.end_time)
 
-    valid_diagnostics = check_diagnostics(args.diagnostic.split(','))
-
-
     download_from_queue(args.api_key, args.queue_name, start_time, end_time,
-                        valid_diagnostics, args.keep, args.verbose)
+                        args.diagnostic.split(','), args.keep, args.verbose)
