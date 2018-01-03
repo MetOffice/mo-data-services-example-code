@@ -57,7 +57,7 @@ def download_from_queue(api_key, queue_name, start_time, end_time, diagnostics,
                 if verbose:
                     print(sns_notification)
 
-                if not diagnostics or sns_notification['metadata']['name'] in diagnostics:
+                if not diagnostics or sns_notification['metadata']['name'] in diagnostics.split(','):
                     if int(sns_notification['metadata']['forecast_period']) >= start_time:
                         if int(sns_notification['metadata']['forecast_period']) <= end_time:
                             download_object(sns_notification['url'], api_key, verbose)
@@ -90,4 +90,4 @@ if __name__ == '__main__':
     (start_time, end_time) = check_times(args.start_time, args.end_time)
 
     download_from_queue(args.api_key, args.queue_name, start_time, end_time,
-                        args.diagnostic.split(','), args.keep, args.verbose)
+                        args.diagnostic, args.keep, args.verbose)
