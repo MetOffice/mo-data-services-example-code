@@ -8,6 +8,7 @@ import argparse
 import json
 import os.path
 import requests
+import csv
 import sys
 
 import boto3
@@ -35,26 +36,49 @@ def download_from_queue(api_key, queue_name, start_time, end_time, diagnostics,
     sqs = boto3.resource('sqs')
     queue = sqs.get_queue_by_name(QueueName=queue_name)
 
-    while True:
-        print("Checking queue for messages...")
+    with open('./output/{}-diagnostics.csv'.format(queue_name), 'w', newline='') as csv_file:
+        fieldnames = ['object_url', 'diagnostic', 'forectast_reference_time', \
+                      'forecast_period', 'realization', \
+                      'height', 'height_units', \
+                      'pressure', 'pressure_units']
+        csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames,
+                                    quotechar='"', quoting=csv.QUOTE_ALL)
+        csv_writer.writeheader()
 
-        for message in queue.receive_messages(WaitTimeSeconds=2):
-            message_body = json.loads(message.body)
-            sns_notification = json.loads(message_body['Message'])
+        while True:
+            print("Checking queue for messages...")
+            
+            try:
+                for message in queue.receive_messages(WaitTimeSeconds=20):
+                    message_body = json.loads(message.body)
+                    sns_notification = json.loads(message_body['Message'])
 
-            # Production code should verify the SNS signature before
-            # proceeding.
+                    # Production code should verify the SNS signature before
+                    # proceeding.
 
-            if verbose:
-                print(sns_notification)
+                    if verbose:
+                        print(sns_notification)
+                    
+                    metadata = sns_notification['metadata']
+                    csv_writer.writerow({'object_url': sns_notification['url'],
+                                         'diagnostic': metadata['name'],
+                                         'forectast_reference_time': metadata['forecast_reference_time'],
+                                         'forecast_period': metadata['forecast_period'],
+                                         'realization': metadata.get('realization', ''),
+                                         'height': metadata.get('height',''),
+                                         'height_units': metadata.get('height_units',''),
+                                         'pressure': metadata.get('pressure',''),
+                                         'pressure_units': metadata.get('pressure_units','')})
 
-            if sns_notification['metadata']['name'] in diagnostics:
-                if int(sns_notification['metadata']['forecast_period']) >= start_time:
-                    if int(sns_notification['metadata']['forecast_period']) <= end_time:
-                        download_object(sns_notification['url'], api_key, verbose)
+                    if sns_notification['metadata']['name'] in diagnostics:
+                        if int(sns_notification['metadata']['forecast_period']) >= start_time:
+                            if int(sns_notification['metadata']['forecast_period']) <= end_time:
+                                download_object(sns_notification['url'], api_key, verbose)
 
-            if not keep_messages:
-                message.delete()
+                    if not keep_messages:
+                        message.delete()
+            except:
+                print("Exception processing SQS messages:", sys.exc_info()[0])
 
 
 def check_times(start_time, end_time):
