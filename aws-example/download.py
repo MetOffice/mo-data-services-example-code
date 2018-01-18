@@ -47,7 +47,7 @@ def download_from_queue(api_key, queue_name, start_time, end_time, diagnostics,
 
         while True:
             print("Checking queue for messages...")
-            
+
             try:
                 for message in queue.receive_messages(WaitTimeSeconds=20):
                     message_body = json.loads(message.body)
@@ -58,7 +58,7 @@ def download_from_queue(api_key, queue_name, start_time, end_time, diagnostics,
 
                     if verbose:
                         print(sns_notification)
-                    
+
                     metadata = sns_notification['metadata']
                     csv_writer.writerow({'object_url': sns_notification['url'],
                                          'diagnostic': metadata['name'],
@@ -70,10 +70,10 @@ def download_from_queue(api_key, queue_name, start_time, end_time, diagnostics,
                                          'pressure': metadata.get('pressure',''),
                                          'pressure_units': metadata.get('pressure_units','')})
 
-                    if sns_notification['metadata']['name'] in diagnostics:
-                        if int(sns_notification['metadata']['forecast_period']) >= start_time:
-                            if int(sns_notification['metadata']['forecast_period']) <= end_time:
-                                download_object(sns_notification['url'], api_key, verbose)
+                    #if sns_notification['metadata']['name'] in diagnostics:
+                    #    if int(sns_notification['metadata']['forecast_period']) >= start_time:
+                    #        if int(sns_notification['metadata']['forecast_period']) <= end_time:
+                    #            download_object(sns_notification['url'], api_key, verbose)
 
                     if not keep_messages:
                         message.delete()
