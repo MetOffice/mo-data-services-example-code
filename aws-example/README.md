@@ -11,7 +11,7 @@ corresponding objects from the service using an authenticating API key.
 * A Met Office AWS SNS topic ARN.
 * A service API key.
 * An AWS account where you can create a new [SQS queue](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-create-queue.html) and [IAM policies for SQS queues](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-authentication-and-access-control.html).
-* A Python 3 environment containing the [boto3 library](https://boto3.readthedocs.io/en/latest/).
+* A Python 3 environment containing the [Boto3](https://boto3.readthedocs.io/en/latest/) and [Requests](http://docs.python-requests.org/en/master/ "Requests library") libraries.
 
 ## Getting started
 
