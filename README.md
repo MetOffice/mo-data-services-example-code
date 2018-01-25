@@ -26,7 +26,7 @@
      "MessageId" : "4f3a4169-21d7-55d4-b427-1333c7f84113",
      "TopicArn" : "arn:aws:sns:eu-west-2:271253003023:mo-atmospheric-global",
      "Subject" : "AWS Notification Message",
-     "Message" : "{\"metadata\":{\"forecast_reference_time\":\"2017-10-07T23:00:00Z\",\"forecast_period\":\"0\",\"name\":\"deprecated_precipitation_rate\",\"forecast_period_units\":\"seconds\"},\"url\":\"https://api.metoffice.gov.uk/mo-atmospheric-global/v1/objects/20171007T2300Z-PT0000H-deprecated_precipitation_rate.nc\"}",
+     "Message" : "{\"metadata\":{\"forecast_reference_time\":\"2017-10-07T23:00:00Z\",\"forecast_period\":\"0\",\"name\":\"deprecated_precipitation_rate\",\"forecast_period_units\":\"seconds\"},\"url\":\"https://<service-url-supplied-by-Met-Office/id-of-item-requested>\"}",
      "Timestamp" : "2017-10-13T16:03:59.095Z",
      "SignatureVersion" : "1",
      "Signature" : "af0SnkRbIxaZ1P721XkkSqPdCLaIh+/Bri1uonK8n02rnjXQ6fNXJQ4HEbu0bjUB3Wm/CSHAlLc2sVWU5aFFCYABr2UBQfsrutj07dR2OmcF6WX/MHaXodWApBFrXemqpOLJ6e+KRzfGfr+rKczlpLwc9d4CQgPhA5a1eVuKlKWhoLJNuwdxcjA5FhXT/ABx3pmd+GRJ6Zk5uh/2xxV7Kt+TZ7oom/mKIOGU0YV35ki3R+t52aKEXZ43m5J/6LF8G/o1pXeMl9BJWtgdtHA9luLfN1ryNs4TmkSQxFuWXrrHTAL2iYSyxzNKB+a0gg2DfLqS9shsxAqD2HWH4/spyg==",
@@ -47,7 +47,7 @@
       "height_units":"m",
       "height":"5.0 10.0 20.0 30.0 50.0 75.0 100.0 150.0 200.0 250.0 300.0 400.0 500.0 600.0 700.0 800.0 1000.0 1250.0 1500.0 1750.0 2000.0 2250.0 2500.0 2750.0 3000.0 3250.0 3500.0 3750.0 4000.0 4500.0 5000.0 5500.0 6000.0"
       },
-      "url":"https://api.metoffice.gov.uk/mo-atmospheric-global/v1/objects/20171015T0000Z-PT0000H-temperature_on_height_levels.nc"
+      "url":"https://<service-url-supplied-by-Met-Office/id-of-item-requested>"
    }
 ```
 
