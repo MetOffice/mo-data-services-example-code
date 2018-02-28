@@ -25,7 +25,6 @@
      "Type" : "Notification",
      "MessageId" : "4f3a4169-21d7-55d4-b427-1333c7f84113",
      "TopicArn" : "arn:aws:sns:eu-west-2:271253003023:mo-atmospheric-global",
-     "Subject" : "AWS Notification Message",
      "Message" : "{\"metadata\":{\"forecast_reference_time\":\"2017-10-07T23:00:00Z\",\"forecast_period\":\"0\",\"name\":\"deprecated_precipitation_rate\",\"forecast_period_units\":\"seconds\"},\"url\":\"https://<service-url-supplied-by-Met-Office/id-of-item-requested>\"}",
      "Timestamp" : "2017-10-13T16:03:59.095Z",
      "SignatureVersion" : "1",
