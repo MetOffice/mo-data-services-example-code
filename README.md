@@ -13,6 +13,7 @@
 
   * Sign up to one or more of the Atmospheric Model data services.
   * Receive one or more API keys.
+  * Receive a customer id.
   * Receive one or more SNS topic Amazon Resource Names (ARNs) if using an AWS account.
 
 # Actions:
@@ -55,7 +56,7 @@
    3.  Decide by examining the metadata section in each notification which items you would like to download.
 
 
-   4.  Using the url in the notification and the **API key** (see [Prerequisites](#prerequisites)) as a header called "x-api-key" request the object for download.
+   4.  Using the url in the notification and the **API key** (see [Prerequisites](#prerequisites)) as a header called "x-api-key" and the customer id as a header called "customer-id" request the object for download.
 
 
    5.  Receive the requested object as a file download.
