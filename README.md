@@ -1,6 +1,6 @@
-# Notification and download of Met Office atmospheric model data
+# Notification and download of Met Office model data
 ### Timely access to forecast data at a granular level
-  This API provides access to UK and Global atmospheric model data to customers who have signed up for a service.
+  This API provides access to UK and Global model data to customers who have signed up for a service.
 
 ### Services available:
 
@@ -8,10 +8,16 @@
    - MOGREPS-G Ensemble
    - UKV Model
    - MOGREPS-UK Ensemble
+   - Global Model Para feed
+   - MOGREPS-G Ensemble Para feed
+   - UKV Model Para feed
+   - MOGREPS-UK Ensemble Para feed
+   - UK Wave Model
+
 
 # Prerequisites:
 
-  * Sign up to one or more of the Atmospheric Model data services.
+  * Sign up to one or more of the Model data services.
   * Receive one or more API keys.
   * Receive one or more SNS topic Amazon Resource Names (ARNs) if using an AWS account.
 
