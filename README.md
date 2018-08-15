@@ -4,10 +4,16 @@
 
 ### Services available:
 
+#### Atmospheric
    - Global Model
    - MOGREPS-G Ensemble
    - UKV Model
    - MOGREPS-UK Ensemble
+#### Marine
+   - UK Wave Model
+   - Global Wave Model *(coming soon..)*
+   - European Wave Model *(coming soon..)*
+   - UK Surge Model *(coming soon..)*
 
 # Prerequisites:
 
