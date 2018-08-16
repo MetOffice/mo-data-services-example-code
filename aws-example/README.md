@@ -1,5 +1,5 @@
 # How to download Met Office model data using Amazon Web Services
-A demonstration code example of downloading objects in response to SNS messages via an SQS queue. The diagnostics used in this example and within the code are based around atmospheric models, however these can be change to different diagnostics based on any model.
+A demonstration code example of downloading objects in response to SNS messages via an SQS queue. The diagnostics used in this example and within the code are based around atmospheric models, however these can be changed to different diagnostics based on any model.
 
 By following these instructions you will subscribe an Amazon Web Services (AWS) Simple Queue Service (SQS) queue in your
 AWS account to a Met Office Simple Notification Service (SNS) topic. You will then run

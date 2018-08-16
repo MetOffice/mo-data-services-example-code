@@ -1,5 +1,5 @@
 # How to download Met Office model data using an HTTP endpoint
-A demonstration code example of downloading objects in response to SNS messages via an HTTP endpoint. The diagnostics used in this example and within the code are based around atmospheric models, however these can be change to different diagnostics based on any model.
+A demonstration code example of downloading objects in response to SNS messages via an HTTP endpoint. The diagnostics used in this example and within the code are based around atmospheric models, however these can be changed to different diagnostics based on any model.
 
 By using the following you will be able to subscribe to an Amazon Web Services (AWS) Simple Notification Service (SNS) topic and start downloading objects.
 The running python script will accept notifications from the SNS topic and download the objects according to the input parameters.
