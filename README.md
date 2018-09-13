@@ -1,10 +1,10 @@
-# Notification and download of data
-### Timely access to data at a granular level
-  This API provides whole-file access to customers who have signed up for a service.
+# Notification and download of data from Met Office object services
+### Timely access to object data at a granular level
+  This API provides whole-file access to customers who have signed up for a Met Office object service.
 
 # Prerequisites:
 
-  * Sign up to one or more of the available data services.
+  * Sign up to one or more of the available Met Office object services.
   * Receive one or more API keys.
   * Receive one or more SNS topic Amazon Resource Names (ARNs) if using an AWS account.
 
