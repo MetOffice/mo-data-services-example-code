@@ -12,17 +12,14 @@ import requests
 DOWNLOAD_DIR = 'objects'
 CHUNK_SIZE = 10 * 1024 * 1024
 app = Flask(__name__)
-args = []
-checked_diagnostics = ()
-start_time = 0
-end_time = 0
+ARGS = None
 
 
 def get_object(url):
     if not os.path.exists(DOWNLOAD_DIR):
         os.mkdir(DOWNLOAD_DIR)
     target_path = os.path.join(DOWNLOAD_DIR, url.split('/')[-1])
-    headers = {'x-api-key': args.api_key}
+    headers = {'x-api-key': ARGS.api_key}
     print('Beginning download of {} to {}'.format(url, target_path))
     r = requests.get(url, headers=headers, stream=True)
     with open(target_path, 'wb') as fd:
@@ -31,19 +28,31 @@ def get_object(url):
     print('Completed download of {} to {}'.format(url, target_path))
 
 
+def metadata_matches(metadata, min_fp, max_fp, diagnostics):
+    match = True
+    if min_fp is not None:
+        match &= ('forecast_period' in metadata
+                     and int(metadata['forecast_period']) >= min_fp)
+    if max_fp is not None:
+        match &= ('forecast_period' in metadata
+                     and int(metadata['forecast_period']) <= max_fp)
+    if diagnostics:
+        match &= metadata.get('name') in diagnostics
+    return match
+
+
 def handle_message(message):
     message = json.loads(message)
-    if message['metadata']['name'] in checked_diagnostics:
-        forecast_period = int(message['metadata']['forecast_period'])
-        if start_time <= forecast_period <= end_time:
-            get_object(message['url'])
+    metadata = message['metadata']
+    if metadata_matches(metadata, ARGS.min_fp, ARGS.max_fp, ARGS.diagnostics):
+        get_object(message['url'])
 
 
 @app.route('/', methods=['GET', 'POST', 'PUT'])
 def sns():
     # AWS sends JSON with text/plain mimetype
     js = json.loads(request.data)
-    if args.verbose:
+    if ARGS.verbose:
         pprint.pprint(js)
     message_type = request.headers.get('x-amz-sns-message-type')
 
@@ -64,46 +73,25 @@ def sns():
     return 'OK\n'
 
 
-def check_times(start_time, end_time):
-    if (start_time > end_time):
-        raise ValueError('End time should be greater \
-            than or equal to start time')
-    return (start_time * 60 * 60, end_time * 60 * 60)
-
-
-def check_diagnostics(diagnostics):
-    '''
-    Takes a list of command line arguments, and returns corresponding
-    file metadata names, filtering unneeded and unrecognised items
-    '''
-    return_list = []
-    if 'temperature' in diagnostics:
-        return_list.append('surface_temperature')
-    if 'pressure' in diagnostics:
-        return_list.append('surface_air_pressure')
-    if 'humidity' in diagnostics:
-        return_list.append('relative_humidity')
-    return return_list
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Download objects identified in S3 events delivered'
-                    ' to an SQS queue.')
-    parser.add_argument('port', type=int)
-    parser.add_argument('api_key', help='Please input your authentication key')
-    parser.add_argument('start_time', type=int)
-    parser.add_argument('end_time', type=int)
-    parser.add_argument('diagnostic')
+        description='Download files in response to messages to a web server.')
+    parser.add_argument('port', type=int, help='TCP port for web server')
+    parser.add_argument('api_key', help='your API key'),
+    parser.add_argument('--min-fp', type=int, metavar='FORECAST_PERIOD',
+                        help='minimum forecast_period')
+    parser.add_argument('--max-fp', type=int, metavar='FORECAST_PERIOD',
+                        help='maximum forecast_period')
+    parser.add_argument('-d', '--diagnostic', nargs='+', dest='diagnostics',
+                        metavar='DIAGNOSTIC',
+                        help='name(s) of diagnostic parameters,'
+                             ' e.g. air_temperature')
     parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Turn on verbose output.')
-    args = parser.parse_args()
-    (start_time, end_time) = check_times(args.start_time, args.end_time)
+                        help='turn on verbose output.')
+    ARGS = parser.parse_args()
+    if (ARGS.min_fp is not None and ARGS.max_fp is not None
+            and ARGS.max_fp < ARGS.min_fp):
+        parser.error('Maximum forecast_period must not be less than minimum'
+                     ' forecast_period.')
 
-    checked_diagnostics = check_diagnostics(args.diagnostic.split(','))
-
-    app.run(
-        host="0.0.0.0",
-        port=args.port,
-        debug=False
-    )
+    app.run(host="0.0.0.0", port=ARGS.port, debug=False)
