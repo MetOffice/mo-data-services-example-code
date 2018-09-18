@@ -155,7 +155,7 @@ Statement:
    Example:
 
    ```
-   $ python download.py <api_key> <queue-name> <start_time> <end_time> <comma-separated diagnostic names> -v -k
+   $ python download.py -d relative_humidity -k -v <queue_name> <api_key>
    Using: https://eu-west-2.queue.amazonaws.com/<subscribing-account-ID>/<queue-name>
 
    Checking queue for messages...
