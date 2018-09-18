@@ -1,4 +1,4 @@
-# How to download Met Office atmospheric model data using an HTTP endpoint
+# How to download data using an HTTP endpoint
 A demonstration code example of downloading objects in response to SNS messages via an HTTP endpoint.
 
 By using the following you will be able to subscribe to an Amazon Web Services (AWS) Simple Notification Service (SNS) topic and start downloading objects.
@@ -16,21 +16,18 @@ The running python script will accept notifications from the SNS topic and downl
 1. ### Clone the repository onto the server
 
 2. ### Listen for notifications
-   Start polling the SNS topic by running host.py with the following command
-````
-  python host.py <port> <api_key> <start_time> <end_time> <comma_separated_diagnostic_names>
-````
-  * The port argument is the port you want the service to listen on
-  * Note that the start and end times are the forecast times (i.e. T+ times), in hours e.g. 0 to 24, up to a maximum of 144 hours (6 days).
-    * The *start_time* is the start of the forecast period
-    * The *end_time* is the end of the forecast period
-  * The *comma_separated_diagnostic_names* argument should be a comma separated, no white spaces list of the diagnostics you want to download. The *temperature* argument returns the diagnostic **_surface_temperature_**,
-   *pressure* returns **_surface_air_pressure_** and *humidity* returns **_relative_humidity_**.
-   All diagnostic name strings other than *temperature*, *pressure* and *humidity* are ignored.
+   Start listening for messages from the SNS topic by running `host.py`
+   with the TCP port to listen on and your API key as arguments.
+
+  * Additional arguments are available to restrict which files are
+    downloaded, based on the diagnostic name or forecast period.
+    Execute the script with the `-h` flag for details.
   * The -v flag is set for verbose output.
-  * The example below will download all *surface_temperature* and *surface_air_pressure* diagnostics for time periods between T+6 and T+24 with verbose output that will listen on port 8080
+  * The example below will listen on port 8080 and download all
+    *air_temperature* and *surface_air_pressure* diagnostics, producing
+    verbose output.
 ````
-    $ python host.py -v 8080 <api_key> 6 24 temperature,pressure
+    $ python host.py -v 8080 <api_key> -d air_temperature surface_air_pressure
       * Running on http://0.0.0.0:8080/
 
     Press CTRL+C to quit
