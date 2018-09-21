@@ -42,26 +42,26 @@ corresponding objects from the service using an authenticating API key.
 JSON:
 ```
 {
-   "Type":"AWS::SQS::QueuePolicy",
-   "Properties":{
-      "PolicyDocument":{
-         "Version":"2012-10-17",
-         "Statement":[
-            {
-               "Effect":"Allow",
-               "Action":["sqs:SendMessage"],
-               "Resource":{
-                  "Fn::GetAtt":["<your-queue-name>", "Arn"]
-               },
-               "Condition":{
-                  "ArnEquals":{
-                     "aws:SourceArn":"<insert-service-arn-supplied-by-Met-Office>"
-                  }
-               }
-            }
-         ]
-      },
-      "Queues":["<your-queue-name>"]
+    "Version": "2012-10-17",
+    "Statement": [{
+            "Action": [
+                "sqs:SendMessage"
+            ],
+            "Effect": "Allow",
+            "Resource": {
+                "Fn::GetAtt": ["<your-queue-name>", "Arn"]
+            },
+            "Condition": {
+                "ArnEquals": {
+                   "aws:SourceArn": "<insert-service-arn-supplied-by-Met-Office>"
+                   }
+                }
+            }]
+        },
+        "Queues": [{
+            "<your-queue-name>"
+        }]
+      }
    }
 }
 ```
