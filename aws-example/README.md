@@ -20,7 +20,6 @@ corresponding objects from the service using an authenticating API key.
    For an example of an AWS CloudFormation implementation, please see the AWS CloudFormation template
    included in the aws-example folder, available in JSON (cloudformation_sqs.json)
    or in YAML (cloudformation_sqs.yaml) format.
-    .
 
    This can be built using the [AWS command line interface](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-cli-creating-stack.html).
 
@@ -37,55 +36,27 @@ corresponding objects from the service using an authenticating API key.
    The created SQS queue needs a policy (included as part of the example CloudFormation template)
    that allows the service (ARN sent in step 1) to [send messages](http://docs.aws.amazon.com/sns/latest/dg/SendMessageToSQS.html#SendMessageToSQS.sqs.permissions) to it.
 
-   Ensure your SQS queue access policy includes the following statement:
+   Ensure your SQS queue access policy includes the following statement (this will already be in place if you used one of the CloudFormation templates to create the queue):
 
-JSON:
 ```
 {
-    "Version": "2012-10-17",
-    "Statement": [{
-            "Action": [
-                "sqs:SendMessage"
-            ],
-            "Effect": "Allow",
-            "Resource": {
-                "Fn::GetAtt": ["<your-queue-name>", "Arn"]
-            },
-            "Condition": {
-                "ArnEquals": {
-                   "aws:SourceArn": "<insert-service-arn-supplied-by-Met-Office>"
-                   }
-                }
-            }]
-        },
-        "Queues": [{
-            "<your-queue-name>"
-        }]
-      }
-   }
+     "Version":"2012-10-17",
+     "Id": "SQSQueuePolicyToReceiveServiceNotifications",
+     "Statement":[
+        {
+           "Effect": "Allow",
+           "Principal": "*",
+           "Action": "sqs:SendMessage",
+           "Resource": "<your-queue-arn>",
+           "Condition":{
+              "ArnEquals":{
+                 "aws:SourceArn":"<service-arn-supplied-by-Met-Office>"
+              }
+           }
+        }
+     ]
 }
 ```
-
-YAML:
-```
-  SQSQueuePolicy:
-    Type: AWS::SQS::QueuePolicy
-    Properties:
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Principal: "*"
-          Action:
-          - sqs:SendMessage
-          Resource: !GetAtt <your-queue-name>.Arn
-          Condition:
-            ArnEquals:
-              aws:SourceArn: <insert-service-arn-supplied-by-Met-Office>
-      Queues:
-      - <your-queue-name>
-```
-
 
 3. ### Configure access credentials and permissions for your AWS account.
 
