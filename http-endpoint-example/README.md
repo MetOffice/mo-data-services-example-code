@@ -41,4 +41,6 @@ The running python script will accept notifications from the SNS topic and downl
 
 5. ### Receive the downloads in the objects folder
    Downloaded files will collect in the "objects" folder.
-   Files will be in [NetCDF](http://www.unidata.ucar.edu/software/netcdf/docs/netcdf_introduction.html "UCAR Netcdf documentation")  format and have diagnostics that correspond to the arguments supplied in step 2.  Note that the filenames will be entirely random, i.e. details of a file's content cannot be inferred from its name.
+   Files will be in [NetCDF](http://www.unidata.ucar.edu/software/netcdf/docs/netcdf_introduction.html "UCAR Netcdf documentation")  format and have diagnostics that correspond
+   to the arguments supplied in step 2.  Note that the downloaded filenames will be entirely random, i.e. details of a file's content cannot be inferred from its name. The files
+   may, however, be renamed as the user sees fit.

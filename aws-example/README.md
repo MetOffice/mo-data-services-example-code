@@ -142,7 +142,7 @@ Statement:
 
    Downloaded files will collect in the "objects" folder.
    Files will be in [NetCDF](http://www.unidata.ucar.edu/software/netcdf/docs/netcdf_introduction.html) format and have diagnostics
-   that correspond to the arguments supplied in step 5. Note, however, that the filenames will be entirely random, i.e. details of
-   a file's content cannot be inferred from its name.
+   that correspond to the arguments supplied in step 5. Note, however, that the downloaded filenames will be entirely random, i.e. details
+   of a file's content cannot be inferred from its name. The files may nevertheless be renamed as the user sees fit.
 
    [Back to main page](../README.md)
